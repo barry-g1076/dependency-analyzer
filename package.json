@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "analyze": "node index.js",
+    "resolve": "node resolve.js",
+    "resolve:validate": "node resolve.js --validate"
   },
   "keywords": [],
   "author": "",

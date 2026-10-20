@@ -1,0 +1,11 @@
+{
+  "status": "no-solution-in-collected-candidates",
+  "searchedNodes": 1,
+  "maxNodes": 300000,
+  "excluded": [
+    "lucide-vue-next: all captured viable releases are deprecated; replacement recommended"
+  ],
+  "errors": [
+    "No peer-compatible combination found in the collected candidates. Expand candidate history."
+  ]
+}

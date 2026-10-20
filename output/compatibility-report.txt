@@ -1,0 +1,18 @@
+DEPENDENCY COMPATIBILITY REPORT
+Generated: 2026-10-20T16:41:20.918Z
+Node: v24.18.1
+Status: no-solution-in-collected-candidates
+Search nodes: 1
+
+
+EXTERNAL PEERS (not evaluated as direct dependencies)
+
+WARNINGS
+No peer-compatible combination found in the collected candidates. Expand candidate history.
+
+
+NPM VALIDATION
+Not run (use --validate)
+
+
+A clean npm resolution does not guarantee application compatibility. Run build/tests and review migration guides.
