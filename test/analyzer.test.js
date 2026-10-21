@@ -8,7 +8,7 @@ import { classifySpec, matchSpec } from '../src/spec.js';
 import { getPackageMetadata, clearRegistryCache } from '../src/registry.js';
 import { resolveRecommendations, makeRecommendedManifest } from '../src/resolver.js';
 import { validateWithNpm, parseNpmConflict } from '../src/validation.js';
-import { run } from '../src/cli.js';
+import { analyze, renderText, run } from '../src/cli.js';
 
 const candidate = (version, peers = {}, extra = {}) => ({ version, peerDependencies: peers, ...extra });
 const pkg = (name, versions, extra = {}) => ({ name, section: 'dependencies', type: 'production', requestedRange: '*', status: 'analyzed',
@@ -23,11 +23,67 @@ test('reader errors and manifest preservation', async () => {
     await assert.rejects(readProject(dir), /Failed to read/);
     await writeFile(join(dir, 'package.json'), JSON.stringify({ dependencies: {} }));
     assert.deepEqual((await readProject(dir)).dependencies, []);
-    await writeFile(join(dir, 'package.json'), JSON.stringify({ dependencies: { '@scope/a': '^1.0.0' }, devDependencies: { '@scope/a': '^2.0.0' } }));
-    await assert.rejects(readProject(dir), /Duplicate dependency/);
+    await writeFile(join(dir, 'package.json'), JSON.stringify({ dependencies: { '@scope/a': '^1.0.0' }, devDependencies: { '@scope/a': '^2.0.0', after: '^1.0.0' } }));
+    const duplicated = (await readProject(dir)).dependencies;
+    assert.equal(duplicated.length, 2);
+    assert.deepEqual(duplicated[0].declarations, [
+      { section: 'dependencies', requestedRange: '^1.0.0' },
+      { section: 'devDependencies', requestedRange: '^2.0.0' }
+    ]);
+    assert.equal(duplicated[0].status, 'duplicate-declaration');
+    assert.equal(duplicated[0].requestedRange, null);
+    assert.equal(duplicated[1].name, 'after');
     await writeFile(join(dir, 'package.json'), JSON.stringify({ dependencies: { '@scope/a': '^1.0.0' }, scripts: { build: 'echo yes' } }));
     assert.equal((await readProject(dir)).dependencies[0].name, '@scope/a');
   } finally { await rm(dir, { recursive: true, force: true }); }
+});
+
+test('identical and conflicting duplicate ranges stay in both sections through analysis, resolution and reporting', async () => {
+  for (const devRange of ['^1.0.0', '^2.0.0']) {
+    const dir = await mkdtemp(join(tmpdir(), 'analyzer-duplicate-'));
+    try {
+      const manifest = { name: 'duplicates', version: '1.0.0', dependencies: { shared: '^1.0.0' },
+        devDependencies: { shared: devRange, after: '^1.0.0' }, scripts: { build: 'echo build' } };
+      await writeFile(join(dir, 'package.json'), JSON.stringify(manifest));
+      const fetched = [];
+      const metadata = await analyze(dir, { concurrency: 2, initialCandidates: 1, maxCandidates: 1, timeoutMs: 1000,
+        getMetadata: async name => { fetched.push(name); return { latest: '2.0.0', totalVersions: 1,
+          candidateHistory: [candidate('2.0.0')], candidates: [candidate('2.0.0')] }; } });
+      assert.deepEqual(fetched, ['after']);
+      assert.equal(metadata.totalDependencies, 2);
+      assert.equal(metadata.totalDeclarations, 3);
+      assert.equal(metadata.packages[0].status, 'duplicate-declaration');
+      assert.equal(metadata.packages[1].status, 'analyzed');
+      const result = await resolveRecommendations(metadata, { initialCandidates: 1, maxCandidates: 1,
+        validator: async proposed => {
+          assert.equal(proposed.dependencies.shared, '^1.0.0');
+          assert.equal(proposed.devDependencies.shared, devRange);
+          assert.equal(proposed.devDependencies.after, '2.0.0');
+          return { passed: true, summary: 'npm resolved the dependency tree' };
+        } });
+      assert.equal(result.status, 'manual-migration-required');
+      assert.equal(result.validation.passed, true);
+      assert.equal(result.validation.duplicateDeclarationsUnresolved, true);
+      assert.equal(result.optimalityProven, false);
+      assert.equal(result.recommendations.find(x => x.name === 'shared').status, 'duplicate-declaration');
+      assert.deepEqual(result.unresolvedDuplicates[0].declarations, metadata.packages[0].declarations);
+      const proposed = makeRecommendedManifest(manifest, result.recommendations);
+      assert.equal(proposed.dependencies.shared, '^1.0.0');
+      assert.equal(proposed.devDependencies.shared, devRange);
+      assert.equal(proposed.devDependencies.after, '2.0.0');
+      const textReport = renderText(metadata, result);
+      assert.match(textReport, /shared: dependencies \^1\.0\.0; devDependencies \^/);
+      assert.match(textReport, /duplicate-declaration warning; manual cleanup required/);
+      assert.match(textReport, /Duplicate declarations remain unchanged; npm resolution does not clear this warning/);
+      const metadataFile = join(dir, 'metadata.json');
+      await writeFile(metadataFile, JSON.stringify(metadata));
+      await run('resolve', ['--metadata', metadataFile, '--output', join(dir, 'out'), '--candidate-limit', '1', '--max-candidates', '1']);
+      const outputManifest = JSON.parse(await readFile(join(dir, 'out', 'recommended-package.json'), 'utf8'));
+      assert.equal(outputManifest.dependencies.shared, '^1.0.0');
+      assert.equal(outputManifest.devDependencies.shared, devRange);
+      assert.match(await readFile(join(dir, 'out', 'compatibility-report.txt'), 'utf8'), /duplicate-declaration/);
+    } finally { await rm(dir, { recursive: true, force: true }); }
+  }
 });
 
 test('specifications, prereleases and partial OR peer regression', () => {

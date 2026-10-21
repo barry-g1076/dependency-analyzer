@@ -74,36 +74,43 @@ export async function analyze(projectPath, options) {
   const { manifest, dependencies } = await readProject(projectPath);
   const packages = await mapBounded(dependencies, options.concurrency, async (dependency, index) => {
     if (options.verbose) process.stderr.write(`[${index + 1}/${dependencies.length}] ${dependency.name}\n`);
+    if (dependency.status === 'duplicate-declaration') return { ...dependency,
+      message: 'duplicate-declaration: resolve the manifest sections manually; original specifications preserved', candidates: [] };
     const spec = classifySpec(dependency.requestedRange);
     if (spec.type !== 'semver') return { ...dependency, status: 'unsupported-specification', specificationType: spec.type, message: spec.diagnostic ?? `${spec.type} specification preserved`, candidates: [] };
     try {
-      const metadata = await getPackageMetadata(dependency.name, { limit: options.initialCandidates, maxCandidates: options.maxCandidates, includePrerelease: options.includePrerelease, timeoutMs: options.timeoutMs });
+      const metadata = await (options.getMetadata ?? getPackageMetadata)(dependency.name, { limit: options.initialCandidates, maxCandidates: options.maxCandidates, includePrerelease: options.includePrerelease, timeoutMs: options.timeoutMs });
       return { ...dependency, status: 'analyzed', ...metadata,
         latestPermitted: metadata.candidateHistory.find(c => matchSpec(c.version, spec, { includePrerelease: options.includePrerelease }) === true)?.version ?? null };
     } catch (error) { return { ...dependency, status: 'error', error: error.message, candidates: [] }; }
   });
   return { projectPath, generatedAt: new Date().toISOString(), nodeVersion: options.nodeVersion ?? process.version,
     npmVersion: (await import('node:child_process')).execFileSync(process.platform === 'win32' ? 'cmd.exe' : 'npm', process.platform === 'win32' ? ['/d', '/s', '/c', 'npm --version'] : ['--version'], { encoding: 'utf8' }).trim(),
-    totalDependencies: dependencies.length, manifest, packages };
+    totalDependencies: dependencies.length, totalDeclarations: dependencies.reduce((sum, p) => sum + p.declarations.length, 0), manifest, packages };
 }
 
-function renderText(report, result) {
+export function renderText(report, result) {
   const lines = [
     'DEPENDENCY COMPATIBILITY REPORT',
     `Project: ${report.manifest?.name ?? '(unnamed)'} (${report.projectPath})`,
     `Generated: ${new Date().toISOString()}`,
     `Node: ${report.nodeVersion} | npm: ${report.npmVersion ?? 'unknown'}`,
-    `Direct dependencies analyzed: ${report.totalDependencies}`,
+    `Direct packages analyzed: ${report.totalDependencies} (${report.totalDeclarations ?? report.totalDependencies} manifest declarations)`,
     `Status: ${result.status}`,
     `Search: ${result.searchedNodes}/${result.maxNodes} nodes; ${result.validations}/${result.maxValidations} npm attempts; ${result.candidateDepth} release depth`,
     `Optimality proven: ${result.optimalityProven ? 'yes, within collected metadata' : 'no'}`,
     '', 'RECOMMENDATIONS',
-    ...result.recommendations.map(r => `${r.name} [${r.section}]: ${r.original} -> ${r.version ?? '(preserved)'} | published: ${r.latestPublished ?? 'unknown'} | permitted: ${r.latestPermitted ?? 'unknown in collected history'}${r.deprecated ? ` | DEPRECATED: ${r.deprecated}` : ''}`),
+    ...result.recommendations.map(r => r.status === 'duplicate-declaration'
+      ? `${r.name}: ${r.declarations.map(d => `${d.section} ${d.requestedRange}`).join('; ')} -> (preserved) | WARNING: duplicate-declaration`
+      : `${r.name} [${r.section}]: ${r.original} -> ${r.version ?? '(preserved)'} | published: ${r.latestPublished ?? 'unknown'} | permitted: ${r.latestPermitted ?? 'unknown in collected history'}${r.deprecated ? ` | DEPRECATED: ${r.deprecated}` : ''}`),
     '', 'CANNOT USE NEWEST PUBLISHED RELEASE',
     ...result.recommendations.filter(r => r.version && r.latestPublished && r.version !== r.latestPublished).map(r => `${r.name}: ${r.version} instead of ${r.latestPublished}`),
     '', 'DIAGNOSTICS', ...result.diagnostics,
+    ...(result.unresolvedDuplicates.length ? ['', 'DUPLICATE DECLARATIONS',
+      ...result.unresolvedDuplicates.map(p => `${p.name}: ${p.declarations.map(d => `${d.section} ${d.requestedRange}`).join('; ')} | duplicate-declaration warning; manual cleanup required`)] : []),
     '', 'NPM VALIDATION',
     result.validation ? `${result.validation.passed ? 'PASSED' : 'FAILED'}: ${result.validation.summary}` : 'Not run; use --validate',
+    ...(result.unresolvedDuplicates.length ? ['Duplicate declarations remain unchanged; npm resolution does not clear this warning.'] : []),
     result.validation?.log ?? '', '', result.caveat
   ];
   return lines.join('\n');
@@ -135,7 +142,7 @@ export async function run(mode, argv) {
   await Promise.all([
     writeFile(join(outputDir, 'recommended-dependencies.json'), JSON.stringify(result, null, 2)),
     writeFile(join(outputDir, 'recommended-package.json'), JSON.stringify(recommendedManifest, null, 2) + '\n'),
-    writeFile(join(outputDir, 'compatibility-report.json'), JSON.stringify({ project: report.projectPath, generatedAt: new Date().toISOString(), nodeVersion: report.nodeVersion, npmVersion: report.npmVersion, totalDependencies: report.totalDependencies, ...result }, null, 2)),
+    writeFile(join(outputDir, 'compatibility-report.json'), JSON.stringify({ project: report.projectPath, generatedAt: new Date().toISOString(), nodeVersion: report.nodeVersion, npmVersion: report.npmVersion, totalDependencies: report.totalDependencies, totalDeclarations: report.totalDeclarations ?? report.totalDependencies, ...result }, null, 2)),
     writeFile(join(outputDir, 'compatibility-report.txt'), renderText(report, result))
   ]);
   console.log(`Status: ${result.status}; search nodes: ${result.searchedNodes}; reports: ${outputDir}`);

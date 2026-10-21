@@ -24,7 +24,8 @@ function candidateConflict(aName, a, bName, b, diagnostics) {
 
 export function makeRecommendedManifest(manifest, recommendations) {
   const copy = structuredClone(manifest);
-  for (const item of recommendations) if (item.version && item.change) {
+  for (const item of recommendations) if (item.version && item.change && item.status !== 'duplicate-declaration' &&
+    (item.declarations?.length ?? 1) === 1) {
     copy[item.section] ??= {};
     copy[item.section][item.name] = item.version;
   }
@@ -40,12 +41,18 @@ export async function resolveRecommendations(report, {
 } = {}) {
   const diagnostics = new Set();
   const packages = report.packages ?? [];
+  const unresolvedDuplicates = packages.filter(p => p.status === 'duplicate-declaration').map(p => ({
+    name: p.name, declarations: p.declarations ?? []
+  }));
   const platformOmitted = packages.filter(p => p.section === 'optionalDependencies' && (p.candidateHistory ?? p.candidates)?.length &&
     (p.candidateHistory ?? p.candidates).every(c => !platformAllowed(c.os, platform) || !platformAllowed(c.cpu, arch)));
   for (const p of platformOmitted) diagnostics.add(`${p.name}: optional platform package skipped on ${platform}/${arch}; original specification preserved`);
   const supported = packages.filter(p => !platformOmitted.includes(p) && p.status === 'analyzed' && (p.candidateHistory ?? p.candidates)?.length);
   const unsupported = packages.filter(p => !supported.includes(p) && !platformOmitted.includes(p));
-  for (const p of unsupported) diagnostics.add(`${p.name}: ${p.message ?? p.error ?? p.status ?? 'missing metadata'}; original specification preserved`);
+  for (const p of unsupported) {
+    if (p.status === 'duplicate-declaration') diagnostics.add(`${p.name}: duplicate-declaration warning (${(p.declarations ?? []).map(d => `${d.section} ${d.requestedRange}`).join('; ')}); original declarations preserved; manual cleanup required`);
+    else diagnostics.add(`${p.name}: ${p.message ?? p.error ?? p.status ?? 'missing metadata'}; original specification preserved`);
+  }
   const names = supported.map(p => p.name);
   const byName = new Map(supported.map(p => [p.name, p]));
   const direct = new Set(packages.map(p => p.name));
@@ -68,10 +75,14 @@ export async function resolveRecommendations(report, {
   }
   function recommendations(selection) {
     return packages.map(p => {
+      if (p.status === 'duplicate-declaration') return { name: p.name, section: null, original: null,
+        declarations: p.declarations ?? [], version: null, latestPublished: null, latestPermitted: null,
+        deprecated: null, change: false, status: 'duplicate-declaration', peerDependencies: {} };
       const c = selection.get(p.name);
       const spec = classifySpec(p.requestedRange);
       const latestPermitted = (p.candidateHistory ?? p.candidates ?? []).find(x => matchSpec(x.version, spec) === true)?.version ?? null;
       return { name: p.name, section: p.section ?? (p.type === 'development' ? 'devDependencies' : 'dependencies'), original: p.requestedRange,
+        declarations: p.declarations ?? [{ section: p.section ?? (p.type === 'development' ? 'devDependencies' : 'dependencies'), requestedRange: p.requestedRange }],
         version: c?.version ?? null, latestPublished: p.latest ?? null, latestPermitted, deprecated: c?.deprecated ?? null,
         change: !!c && spec.type === 'semver' && p.requestedRange !== c.version,
         status: c ? 'recommended' : 'preserved', peerDependencies: c?.peerDependencies ?? {} };
@@ -115,6 +126,7 @@ export async function resolveRecommendations(report, {
           if (validations >= maxValidations) { limitReached = true; stop = true; return; }
           validations++;
           validation = await validator(makeRecommendedManifest(report.manifest ?? {}, proposed));
+          if (unresolvedDuplicates.length) validation = { ...validation, duplicateDeclarationsUnresolved: true };
           if (!validation.passed) {
             lastFailure = validation;
             diagnostics.add(`npm validation ${validations} failed: ${validation.conflict ?? validation.summary ?? 'unknown conflict'}`);
@@ -154,15 +166,15 @@ export async function resolveRecommendations(report, {
   }
   for (const item of externalPeers.filter(x => !x.optional)) diagnostics.add(`${item.source} requires external peer ${item.peer}@${item.range}; npm validation required`);
   const incomplete = unsupported.length > 0 || packages.some(p => (p.candidateHistory ?? p.candidates ?? []).length < (p.totalVersions ?? 0));
-  const missingMetadata = unsupported.some(p => p.status !== 'unsupported-specification');
+  const missingMetadata = unsupported.some(p => p.status !== 'unsupported-specification' && p.status !== 'duplicate-declaration');
   const unresolvedSelected = [...selected].some(([name, c]) => [...selected].some(([peerName, peer]) =>
     !!c.peerDependencies?.[peerName] && matchSpec(peer.version, c.peerDependencies[peerName]) === null));
-  const manual = unsupported.some(p => p.status === 'unsupported-specification') || unresolvedSelected;
-  const status = best ? (bestValidation?.passed ? 'validated' : limitReached ? 'search-limit' : missingMetadata ? 'incomplete-metadata' : manual ? 'manual-migration-required' : 'peer-compatible-candidate')
+  const manual = unsupported.some(p => p.status === 'unsupported-specification') || unresolvedSelected || unresolvedDuplicates.length > 0;
+  const status = best ? (unresolvedDuplicates.length ? 'manual-migration-required' : bestValidation?.passed ? 'validated' : limitReached ? 'search-limit' : missingMetadata ? 'incomplete-metadata' : manual ? 'manual-migration-required' : 'peer-compatible-candidate')
     : limitReached ? 'search-limit' : lastFailure ? 'validation-failed' : missingMetadata ? 'incomplete-metadata' : manual ? 'manual-migration-required' : incomplete ? 'search-limit' : 'conflict';
   return { status, searchedNodes, maxNodes, validations, maxValidations, candidateDepth, searchComplete: !limitReached && !incomplete,
-    optimalityProven: !!best && !limitReached && (bestScore[0] === names.length || !incomplete),
-    recommendations: recs, selected: Object.fromEntries([...selected].map(([n, c]) => [n, c.version])),
+    optimalityProven: !!best && !limitReached && !unresolvedDuplicates.length && (bestScore[0] === names.length || !incomplete),
+    recommendations: recs, unresolvedDuplicates, selected: Object.fromEntries([...selected].map(([n, c]) => [n, c.version])),
     diagnostics: [...diagnostics].slice(0, 300), externalPeers, validation: bestValidation ?? lastFailure,
     caveat: 'npm validation checks install resolution only; run the application build and tests after reviewing migration guides.' };
 }
