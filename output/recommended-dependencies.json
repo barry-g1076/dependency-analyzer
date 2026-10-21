@@ -1,11 +1,714 @@
 {
-  "status": "no-solution-in-collected-candidates",
-  "searchedNodes": 1,
-  "maxNodes": 300000,
-  "excluded": [
-    "lucide-vue-next: all captured viable releases are deprecated; replacement recommended"
+  "status": "validated",
+  "searchedNodes": 5000,
+  "maxNodes": 5000,
+  "validations": 1,
+  "maxValidations": 3,
+  "candidateDepth": 10,
+  "searchComplete": false,
+  "optimalityProven": false,
+  "recommendations": [
+    {
+      "name": "@inertiajs/vue3",
+      "section": "dependencies",
+      "original": "^2.0.0-beta.3",
+      "version": "3.9.1",
+      "latestPublished": "3.9.1",
+      "latestPermitted": "2.3.29",
+      "deprecated": null,
+      "change": true,
+      "status": "recommended",
+      "peerDependencies": {
+        "vue": "^3.0.0"
+      }
+    },
+    {
+      "name": "@vitejs/plugin-vue",
+      "section": "dependencies",
+      "original": "^5.2.1",
+      "version": "6.0.10",
+      "latestPublished": "6.0.10",
+      "latestPermitted": "5.2.4",
+      "deprecated": null,
+      "change": true,
+      "status": "recommended",
+      "peerDependencies": {
+        "vue": "^3.2.25 || ^3.6.0-rc.10",
+        "vite": "^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0"
+      }
+    },
+    {
+      "name": "@vueuse/core",
+      "section": "dependencies",
+      "original": "^12.0.0",
+      "version": "15.0.0",
+      "latestPublished": "15.0.0",
+      "latestPermitted": "12.8.2",
+      "deprecated": null,
+      "change": true,
+      "status": "recommended",
+      "peerDependencies": {
+        "vue": "^3.5.0"
+      }
+    },
+    {
+      "name": "autoprefixer",
+      "section": "dependencies",
+      "original": "^10.4.20",
+      "version": "10.6.1",
+      "latestPublished": "10.6.1",
+      "latestPermitted": "10.6.1",
+      "deprecated": null,
+      "change": true,
+      "status": "recommended",
+      "peerDependencies": {
+        "postcss": "^8.1.0"
+      }
+    },
+    {
+      "name": "class-variance-authority",
+      "section": "dependencies",
+      "original": "^0.7.1",
+      "version": "0.7.1",
+      "latestPublished": "0.7.1",
+      "latestPermitted": "0.7.1",
+      "deprecated": null,
+      "change": true,
+      "status": "recommended",
+      "peerDependencies": {}
+    },
+    {
+      "name": "clsx",
+      "section": "dependencies",
+      "original": "^2.1.1",
+      "version": "2.1.1",
+      "latestPublished": "2.1.1",
+      "latestPermitted": "2.1.1",
+      "deprecated": null,
+      "change": true,
+      "status": "recommended",
+      "peerDependencies": {}
+    },
+    {
+      "name": "concurrently",
+      "section": "dependencies",
+      "original": "^9.0.1",
+      "version": "10.0.6",
+      "latestPublished": "10.0.6",
+      "latestPermitted": "9.2.5",
+      "deprecated": null,
+      "change": true,
+      "status": "recommended",
+      "peerDependencies": {}
+    },
+    {
+      "name": "laravel-vite-plugin",
+      "section": "dependencies",
+      "original": "^1.0",
+      "version": "3.2.0",
+      "latestPublished": "3.2.0",
+      "latestPermitted": "1.3.0",
+      "deprecated": null,
+      "change": true,
+      "status": "recommended",
+      "peerDependencies": {
+        "vite": "^8.0.0",
+        "fontaine": "^0.8.0"
+      }
+    },
+    {
+      "name": "lucide",
+      "section": "dependencies",
+      "original": "^0.468.0",
+      "version": "1.60.0",
+      "latestPublished": "1.60.0",
+      "latestPermitted": null,
+      "deprecated": null,
+      "change": true,
+      "status": "recommended",
+      "peerDependencies": {}
+    },
+    {
+      "name": "lucide-vue-next",
+      "section": "dependencies",
+      "original": "^0.468.0",
+      "version": "1.0.0",
+      "latestPublished": "1.0.0",
+      "latestPermitted": null,
+      "deprecated": "Package deprecated. Please use @lucide/vue instead.",
+      "change": true,
+      "status": "recommended",
+      "peerDependencies": {
+        "vue": ">=3.0.1"
+      }
+    },
+    {
+      "name": "reka-ui",
+      "section": "dependencies",
+      "original": "^2.0.0",
+      "version": "2.11.0",
+      "latestPublished": "2.11.0",
+      "latestPermitted": "2.11.0",
+      "deprecated": null,
+      "change": true,
+      "status": "recommended",
+      "peerDependencies": {
+        "vue": ">= 3.4.0"
+      }
+    },
+    {
+      "name": "tailwind-merge",
+      "section": "dependencies",
+      "original": "^2.5.5",
+      "version": "3.7.0",
+      "latestPublished": "3.7.0",
+      "latestPermitted": "2.6.1",
+      "deprecated": null,
+      "change": true,
+      "status": "recommended",
+      "peerDependencies": {}
+    },
+    {
+      "name": "tailwindcss",
+      "section": "dependencies",
+      "original": "^3.4.1",
+      "version": "4.3.3",
+      "latestPublished": "4.3.3",
+      "latestPermitted": "3.4.19",
+      "deprecated": null,
+      "change": true,
+      "status": "recommended",
+      "peerDependencies": {}
+    },
+    {
+      "name": "tailwindcss-animate",
+      "section": "dependencies",
+      "original": "^1.0.7",
+      "version": "1.0.7",
+      "latestPublished": "1.0.7",
+      "latestPermitted": "1.0.7",
+      "deprecated": null,
+      "change": true,
+      "status": "recommended",
+      "peerDependencies": {
+        "tailwindcss": ">=3.0.0 || insiders"
+      }
+    },
+    {
+      "name": "typescript",
+      "section": "dependencies",
+      "original": "^5.2.2",
+      "version": "6.0.3",
+      "latestPublished": "7.0.2",
+      "latestPermitted": "5.9.3",
+      "deprecated": null,
+      "change": true,
+      "status": "recommended",
+      "peerDependencies": {}
+    },
+    {
+      "name": "vite",
+      "section": "dependencies",
+      "original": "^6.2.0",
+      "version": "8.3.4",
+      "latestPublished": "8.3.4",
+      "latestPermitted": null,
+      "deprecated": null,
+      "change": true,
+      "status": "recommended",
+      "peerDependencies": {
+        "tsx": "^4.8.1",
+        "jiti": ">=1.21.0",
+        "less": "^4.0.0",
+        "sass": "^1.70.0",
+        "yaml": "^2.4.2",
+        "stylus": ">=0.54.8",
+        "terser": "^5.16.0",
+        "esbuild": "^0.27.0 || ^0.28.0",
+        "sugarss": "^5.0.0",
+        "@types/node": "^20.19.0 || >=22.12.0",
+        "sass-embedded": "^1.70.0",
+        "@vitejs/devtools": "^0.7.1"
+      }
+    },
+    {
+      "name": "vue",
+      "section": "dependencies",
+      "original": "^3.5.13",
+      "version": "3.5.44",
+      "latestPublished": "3.5.44",
+      "latestPermitted": "3.5.44",
+      "deprecated": null,
+      "change": true,
+      "status": "recommended",
+      "peerDependencies": {
+        "typescript": "*"
+      }
+    },
+    {
+      "name": "ziggy-js",
+      "section": "dependencies",
+      "original": "^2.4.2",
+      "version": "2.6.5",
+      "latestPublished": "2.6.5",
+      "latestPermitted": "2.6.5",
+      "deprecated": null,
+      "change": true,
+      "status": "recommended",
+      "peerDependencies": {}
+    },
+    {
+      "name": "@eslint/js",
+      "section": "devDependencies",
+      "original": "^9.19.0",
+      "version": "10.0.1",
+      "latestPublished": "10.0.1",
+      "latestPermitted": "9.39.5",
+      "deprecated": null,
+      "change": true,
+      "status": "recommended",
+      "peerDependencies": {
+        "eslint": "^10.0.0"
+      }
+    },
+    {
+      "name": "@types/node",
+      "section": "devDependencies",
+      "original": "^22.13.5",
+      "version": "26.6.5",
+      "latestPublished": "26.6.5",
+      "latestPermitted": null,
+      "deprecated": null,
+      "change": true,
+      "status": "recommended",
+      "peerDependencies": {}
+    },
+    {
+      "name": "@vue/eslint-config-typescript",
+      "section": "devDependencies",
+      "original": "^14.3.0",
+      "version": "14.9.0",
+      "latestPublished": "14.9.0",
+      "latestPermitted": "14.9.0",
+      "deprecated": null,
+      "change": true,
+      "status": "recommended",
+      "peerDependencies": {
+        "eslint": "^9.10.0 || ^10.0.0",
+        "eslint-plugin-vue": "^9.28.0 || ^10.0.0",
+        "typescript": ">=4.8.4"
+      }
+    },
+    {
+      "name": "eslint",
+      "section": "devDependencies",
+      "original": "^9.17.0",
+      "version": "10.13.0",
+      "latestPublished": "10.13.0",
+      "latestPermitted": "9.39.5",
+      "deprecated": null,
+      "change": true,
+      "status": "recommended",
+      "peerDependencies": {
+        "jiti": "*"
+      }
+    },
+    {
+      "name": "eslint-config-prettier",
+      "section": "devDependencies",
+      "original": "^10.0.1",
+      "version": "10.1.8",
+      "latestPublished": "10.1.8",
+      "latestPermitted": "10.1.8",
+      "deprecated": null,
+      "change": true,
+      "status": "recommended",
+      "peerDependencies": {
+        "eslint": ">=7.0.0"
+      }
+    },
+    {
+      "name": "eslint-plugin-vue",
+      "section": "devDependencies",
+      "original": "^9.32.0",
+      "version": "10.11.1",
+      "latestPublished": "10.11.1",
+      "latestPermitted": "9.33.0",
+      "deprecated": null,
+      "change": true,
+      "status": "recommended",
+      "peerDependencies": {
+        "eslint": "^8.57.0 || ^9.0.0 || ^10.0.0",
+        "vue-eslint-parser": "^10.3.0",
+        "@stylistic/eslint-plugin": "^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0",
+        "@typescript-eslint/parser": "^7.0.0 || ^8.0.0"
+      }
+    },
+    {
+      "name": "prettier",
+      "section": "devDependencies",
+      "original": "^3.4.2",
+      "version": "3.9.10",
+      "latestPublished": "3.9.10",
+      "latestPermitted": "3.9.10",
+      "deprecated": null,
+      "change": true,
+      "status": "recommended",
+      "peerDependencies": {}
+    },
+    {
+      "name": "prettier-plugin-organize-imports",
+      "section": "devDependencies",
+      "original": "^4.1.0",
+      "version": "4.3.0",
+      "latestPublished": "4.3.0",
+      "latestPermitted": "4.3.0",
+      "deprecated": null,
+      "change": true,
+      "status": "recommended",
+      "peerDependencies": {
+        "prettier": ">=2.0",
+        "typescript": ">=2.9",
+        "vue-tsc": "^2.1.0 || 3"
+      }
+    },
+    {
+      "name": "prettier-plugin-tailwindcss",
+      "section": "devDependencies",
+      "original": "^0.6.9",
+      "version": "0.8.1",
+      "latestPublished": "0.8.1",
+      "latestPermitted": "0.6.14",
+      "deprecated": null,
+      "change": true,
+      "status": "recommended",
+      "peerDependencies": {
+        "prettier": "^3.0",
+        "@prettier/plugin-oxc": "*",
+        "@prettier/plugin-pug": "*",
+        "prettier-plugin-astro": "*",
+        "prettier-plugin-jsdoc": "*",
+        "prettier-plugin-marko": "*",
+        "prettier-plugin-svelte": "*",
+        "@prettier/plugin-hermes": "*",
+        "prettier-plugin-css-order": "*",
+        "@zackad/prettier-plugin-twig": "*",
+        "prettier-plugin-sort-imports": "*",
+        "@shopify/prettier-plugin-liquid": "*",
+        "prettier-plugin-multiline-arrays": "*",
+        "prettier-plugin-organize-imports": "*",
+        "@ianvs/prettier-plugin-sort-imports": "*",
+        "prettier-plugin-organize-attributes": "*",
+        "@trivago/prettier-plugin-sort-imports": "*"
+      }
+    },
+    {
+      "name": "typescript-eslint",
+      "section": "devDependencies",
+      "original": "^8.23.0",
+      "version": "8.72.0",
+      "latestPublished": "8.72.0",
+      "latestPermitted": "8.72.0",
+      "deprecated": null,
+      "change": true,
+      "status": "recommended",
+      "peerDependencies": {
+        "eslint": "^8.57.0 || ^9.0.0 || ^10.0.0",
+        "typescript": ">=4.8.4 <6.1.0"
+      }
+    },
+    {
+      "name": "vue-tsc",
+      "section": "devDependencies",
+      "original": "^2.2.4",
+      "version": "3.3.13",
+      "latestPublished": "3.3.13",
+      "latestPermitted": "2.2.12",
+      "deprecated": null,
+      "change": true,
+      "status": "recommended",
+      "peerDependencies": {
+        "typescript": ">=5.0.0"
+      }
+    },
+    {
+      "name": "@rollup/rollup-linux-x64-gnu",
+      "section": "optionalDependencies",
+      "original": "4.9.5",
+      "version": null,
+      "latestPublished": "4.64.12",
+      "latestPermitted": null,
+      "deprecated": null,
+      "change": false,
+      "status": "preserved",
+      "peerDependencies": {}
+    },
+    {
+      "name": "@tailwindcss/oxide-linux-x64-gnu",
+      "section": "optionalDependencies",
+      "original": "^4.0.1",
+      "version": null,
+      "latestPublished": "4.3.3",
+      "latestPermitted": "4.3.3",
+      "deprecated": null,
+      "change": false,
+      "status": "preserved",
+      "peerDependencies": {}
+    },
+    {
+      "name": "lightningcss-linux-x64-gnu",
+      "section": "optionalDependencies",
+      "original": "^1.29.1",
+      "version": null,
+      "latestPublished": "1.33.0",
+      "latestPermitted": "1.33.0",
+      "deprecated": null,
+      "change": false,
+      "status": "preserved",
+      "peerDependencies": {}
+    }
   ],
-  "errors": [
-    "No peer-compatible combination found in the collected candidates. Expand candidate history."
-  ]
+  "selected": {
+    "@vue/eslint-config-typescript": "14.9.0",
+    "prettier-plugin-organize-imports": "4.3.0",
+    "@vitejs/plugin-vue": "6.0.10",
+    "prettier-plugin-tailwindcss": "0.8.1",
+    "typescript-eslint": "8.72.0",
+    "@inertiajs/vue3": "3.9.1",
+    "@vueuse/core": "15.0.0",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-vue": "10.11.1",
+    "laravel-vite-plugin": "3.2.0",
+    "lucide-vue-next": "1.0.0",
+    "reka-ui": "2.11.0",
+    "vite": "8.3.4",
+    "vue": "3.5.44",
+    "vue-tsc": "3.3.13",
+    "tailwindcss-animate": "1.0.7",
+    "class-variance-authority": "0.7.1",
+    "@eslint/js": "10.0.1",
+    "@types/node": "26.6.5",
+    "autoprefixer": "10.6.1",
+    "clsx": "2.1.1",
+    "concurrently": "10.0.6",
+    "eslint": "10.13.0",
+    "lucide": "1.60.0",
+    "prettier": "3.9.10",
+    "tailwind-merge": "3.7.0",
+    "tailwindcss": "4.3.3",
+    "typescript": "6.0.3",
+    "ziggy-js": "2.6.5"
+  },
+  "diagnostics": [
+    "@rollup/rollup-linux-x64-gnu: optional platform package skipped on win32/x64; original specification preserved",
+    "@tailwindcss/oxide-linux-x64-gnu: optional platform package skipped on win32/x64; original specification preserved",
+    "lightningcss-linux-x64-gnu: optional platform package skipped on win32/x64; original specification preserved",
+    "typescript-eslint@8.72.0 requires peer typescript@>=4.8.4 <6.1.0; selected 7.0.2",
+    "eslint-plugin-vue@10.11.1 requires external peer vue-eslint-parser@^10.3.0; npm validation required",
+    "autoprefixer@10.6.1 requires external peer postcss@^8.1.0; npm validation required"
+  ],
+  "externalPeers": [
+    {
+      "source": "prettier-plugin-tailwindcss@0.8.1",
+      "peer": "@prettier/plugin-oxc",
+      "range": "*",
+      "optional": true
+    },
+    {
+      "source": "prettier-plugin-tailwindcss@0.8.1",
+      "peer": "@prettier/plugin-pug",
+      "range": "*",
+      "optional": true
+    },
+    {
+      "source": "prettier-plugin-tailwindcss@0.8.1",
+      "peer": "prettier-plugin-astro",
+      "range": "*",
+      "optional": true
+    },
+    {
+      "source": "prettier-plugin-tailwindcss@0.8.1",
+      "peer": "prettier-plugin-jsdoc",
+      "range": "*",
+      "optional": true
+    },
+    {
+      "source": "prettier-plugin-tailwindcss@0.8.1",
+      "peer": "prettier-plugin-marko",
+      "range": "*",
+      "optional": true
+    },
+    {
+      "source": "prettier-plugin-tailwindcss@0.8.1",
+      "peer": "prettier-plugin-svelte",
+      "range": "*",
+      "optional": true
+    },
+    {
+      "source": "prettier-plugin-tailwindcss@0.8.1",
+      "peer": "@prettier/plugin-hermes",
+      "range": "*",
+      "optional": true
+    },
+    {
+      "source": "prettier-plugin-tailwindcss@0.8.1",
+      "peer": "prettier-plugin-css-order",
+      "range": "*",
+      "optional": true
+    },
+    {
+      "source": "prettier-plugin-tailwindcss@0.8.1",
+      "peer": "@zackad/prettier-plugin-twig",
+      "range": "*",
+      "optional": true
+    },
+    {
+      "source": "prettier-plugin-tailwindcss@0.8.1",
+      "peer": "prettier-plugin-sort-imports",
+      "range": "*",
+      "optional": true
+    },
+    {
+      "source": "prettier-plugin-tailwindcss@0.8.1",
+      "peer": "@shopify/prettier-plugin-liquid",
+      "range": "*",
+      "optional": true
+    },
+    {
+      "source": "prettier-plugin-tailwindcss@0.8.1",
+      "peer": "prettier-plugin-multiline-arrays",
+      "range": "*",
+      "optional": true
+    },
+    {
+      "source": "prettier-plugin-tailwindcss@0.8.1",
+      "peer": "@ianvs/prettier-plugin-sort-imports",
+      "range": "*",
+      "optional": true
+    },
+    {
+      "source": "prettier-plugin-tailwindcss@0.8.1",
+      "peer": "prettier-plugin-organize-attributes",
+      "range": "*",
+      "optional": true
+    },
+    {
+      "source": "prettier-plugin-tailwindcss@0.8.1",
+      "peer": "@trivago/prettier-plugin-sort-imports",
+      "range": "*",
+      "optional": true
+    },
+    {
+      "source": "eslint-plugin-vue@10.11.1",
+      "peer": "vue-eslint-parser",
+      "range": "^10.3.0",
+      "optional": false
+    },
+    {
+      "source": "eslint-plugin-vue@10.11.1",
+      "peer": "@stylistic/eslint-plugin",
+      "range": "^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0",
+      "optional": true
+    },
+    {
+      "source": "eslint-plugin-vue@10.11.1",
+      "peer": "@typescript-eslint/parser",
+      "range": "^7.0.0 || ^8.0.0",
+      "optional": true
+    },
+    {
+      "source": "laravel-vite-plugin@3.2.0",
+      "peer": "fontaine",
+      "range": "^0.8.0",
+      "optional": true
+    },
+    {
+      "source": "vite@8.3.4",
+      "peer": "tsx",
+      "range": "^4.8.1",
+      "optional": true
+    },
+    {
+      "source": "vite@8.3.4",
+      "peer": "jiti",
+      "range": ">=1.21.0",
+      "optional": true
+    },
+    {
+      "source": "vite@8.3.4",
+      "peer": "less",
+      "range": "^4.0.0",
+      "optional": true
+    },
+    {
+      "source": "vite@8.3.4",
+      "peer": "sass",
+      "range": "^1.70.0",
+      "optional": true
+    },
+    {
+      "source": "vite@8.3.4",
+      "peer": "yaml",
+      "range": "^2.4.2",
+      "optional": true
+    },
+    {
+      "source": "vite@8.3.4",
+      "peer": "stylus",
+      "range": ">=0.54.8",
+      "optional": true
+    },
+    {
+      "source": "vite@8.3.4",
+      "peer": "terser",
+      "range": "^5.16.0",
+      "optional": true
+    },
+    {
+      "source": "vite@8.3.4",
+      "peer": "esbuild",
+      "range": "^0.27.0 || ^0.28.0",
+      "optional": true
+    },
+    {
+      "source": "vite@8.3.4",
+      "peer": "sugarss",
+      "range": "^5.0.0",
+      "optional": true
+    },
+    {
+      "source": "vite@8.3.4",
+      "peer": "sass-embedded",
+      "range": "^1.70.0",
+      "optional": true
+    },
+    {
+      "source": "vite@8.3.4",
+      "peer": "@vitejs/devtools",
+      "range": "^0.7.1",
+      "optional": true
+    },
+    {
+      "source": "autoprefixer@10.6.1",
+      "peer": "postcss",
+      "range": "^8.1.0",
+      "optional": false
+    },
+    {
+      "source": "eslint@10.13.0",
+      "peer": "jiti",
+      "range": "*",
+      "optional": true
+    }
+  ],
+  "validation": {
+    "passed": true,
+    "exitCode": 0,
+    "log": "\nup to date in 10s\n",
+    "summary": "npm resolved the dependency tree",
+    "conflict": null,
+    "warnings": [],
+    "errors": []
+  },
+  "caveat": "npm validation checks install resolution only; run the application build and tests after reviewing migration guides."
 }

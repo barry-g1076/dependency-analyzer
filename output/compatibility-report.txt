@@ -1,18 +1,61 @@
 DEPENDENCY COMPATIBILITY REPORT
-Generated: 2026-10-20T16:41:20.918Z
-Node: v24.18.1
-Status: no-solution-in-collected-candidates
-Search nodes: 1
+Project: (unnamed) (C:\Users\romario\Desktop\Projects\book-connect)
+Generated: 2026-10-21T04:36:35.530Z
+Node: v24.18.1 | npm: 11.16.0
+Direct dependencies analyzed: 32
+Status: validated
+Search: 5000/5000 nodes; 1/3 npm attempts; 10 release depth
+Optimality proven: no
 
+RECOMMENDATIONS
+@inertiajs/vue3 [dependencies]: ^2.0.0-beta.3 -> 3.9.1 | published: 3.9.1 | permitted: 2.3.29
+@vitejs/plugin-vue [dependencies]: ^5.2.1 -> 6.0.10 | published: 6.0.10 | permitted: 5.2.4
+@vueuse/core [dependencies]: ^12.0.0 -> 15.0.0 | published: 15.0.0 | permitted: 12.8.2
+autoprefixer [dependencies]: ^10.4.20 -> 10.6.1 | published: 10.6.1 | permitted: 10.6.1
+class-variance-authority [dependencies]: ^0.7.1 -> 0.7.1 | published: 0.7.1 | permitted: 0.7.1
+clsx [dependencies]: ^2.1.1 -> 2.1.1 | published: 2.1.1 | permitted: 2.1.1
+concurrently [dependencies]: ^9.0.1 -> 10.0.6 | published: 10.0.6 | permitted: 9.2.5
+laravel-vite-plugin [dependencies]: ^1.0 -> 3.2.0 | published: 3.2.0 | permitted: 1.3.0
+lucide [dependencies]: ^0.468.0 -> 1.60.0 | published: 1.60.0 | permitted: unknown in collected history
+lucide-vue-next [dependencies]: ^0.468.0 -> 1.0.0 | published: 1.0.0 | permitted: unknown in collected history | DEPRECATED: Package deprecated. Please use @lucide/vue instead.
+reka-ui [dependencies]: ^2.0.0 -> 2.11.0 | published: 2.11.0 | permitted: 2.11.0
+tailwind-merge [dependencies]: ^2.5.5 -> 3.7.0 | published: 3.7.0 | permitted: 2.6.1
+tailwindcss [dependencies]: ^3.4.1 -> 4.3.3 | published: 4.3.3 | permitted: 3.4.19
+tailwindcss-animate [dependencies]: ^1.0.7 -> 1.0.7 | published: 1.0.7 | permitted: 1.0.7
+typescript [dependencies]: ^5.2.2 -> 6.0.3 | published: 7.0.2 | permitted: 5.9.3
+vite [dependencies]: ^6.2.0 -> 8.3.4 | published: 8.3.4 | permitted: unknown in collected history
+vue [dependencies]: ^3.5.13 -> 3.5.44 | published: 3.5.44 | permitted: 3.5.44
+ziggy-js [dependencies]: ^2.4.2 -> 2.6.5 | published: 2.6.5 | permitted: 2.6.5
+@eslint/js [devDependencies]: ^9.19.0 -> 10.0.1 | published: 10.0.1 | permitted: 9.39.5
+@types/node [devDependencies]: ^22.13.5 -> 26.6.5 | published: 26.6.5 | permitted: unknown in collected history
+@vue/eslint-config-typescript [devDependencies]: ^14.3.0 -> 14.9.0 | published: 14.9.0 | permitted: 14.9.0
+eslint [devDependencies]: ^9.17.0 -> 10.13.0 | published: 10.13.0 | permitted: 9.39.5
+eslint-config-prettier [devDependencies]: ^10.0.1 -> 10.1.8 | published: 10.1.8 | permitted: 10.1.8
+eslint-plugin-vue [devDependencies]: ^9.32.0 -> 10.11.1 | published: 10.11.1 | permitted: 9.33.0
+prettier [devDependencies]: ^3.4.2 -> 3.9.10 | published: 3.9.10 | permitted: 3.9.10
+prettier-plugin-organize-imports [devDependencies]: ^4.1.0 -> 4.3.0 | published: 4.3.0 | permitted: 4.3.0
+prettier-plugin-tailwindcss [devDependencies]: ^0.6.9 -> 0.8.1 | published: 0.8.1 | permitted: 0.6.14
+typescript-eslint [devDependencies]: ^8.23.0 -> 8.72.0 | published: 8.72.0 | permitted: 8.72.0
+vue-tsc [devDependencies]: ^2.2.4 -> 3.3.13 | published: 3.3.13 | permitted: 2.2.12
+@rollup/rollup-linux-x64-gnu [optionalDependencies]: 4.9.5 -> (preserved) | published: 4.64.12 | permitted: unknown in collected history
+@tailwindcss/oxide-linux-x64-gnu [optionalDependencies]: ^4.0.1 -> (preserved) | published: 4.3.3 | permitted: 4.3.3
+lightningcss-linux-x64-gnu [optionalDependencies]: ^1.29.1 -> (preserved) | published: 1.33.0 | permitted: 1.33.0
 
-EXTERNAL PEERS (not evaluated as direct dependencies)
+CANNOT USE NEWEST PUBLISHED RELEASE
+typescript: 6.0.3 instead of 7.0.2
 
-WARNINGS
-No peer-compatible combination found in the collected candidates. Expand candidate history.
-
+DIAGNOSTICS
+@rollup/rollup-linux-x64-gnu: optional platform package skipped on win32/x64; original specification preserved
+@tailwindcss/oxide-linux-x64-gnu: optional platform package skipped on win32/x64; original specification preserved
+lightningcss-linux-x64-gnu: optional platform package skipped on win32/x64; original specification preserved
+typescript-eslint@8.72.0 requires peer typescript@>=4.8.4 <6.1.0; selected 7.0.2
+eslint-plugin-vue@10.11.1 requires external peer vue-eslint-parser@^10.3.0; npm validation required
+autoprefixer@10.6.1 requires external peer postcss@^8.1.0; npm validation required
 
 NPM VALIDATION
-Not run (use --validate)
+PASSED: npm resolved the dependency tree
+
+up to date in 10s
 
 
-A clean npm resolution does not guarantee application compatibility. Run build/tests and review migration guides.
+npm validation checks install resolution only; run the application build and tests after reviewing migration guides.

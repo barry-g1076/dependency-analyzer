@@ -1,10 +1,10 @@
 {
   "name": "dependency-analyzer",
   "version": "1.0.0",
-  "description": "",
+  "description": "Analyze and validate newer npm dependency combinations",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test",
     "analyze": "node index.js",
     "resolve": "node resolve.js",
     "resolve:validate": "node resolve.js --validate"
